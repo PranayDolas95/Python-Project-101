@@ -3,6 +3,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import UnstructuredPowerPointLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+
 def load_documents(data_dir=r"C:\Users\Harshwardhan\mini-genai-assistant\data"):
     docs = []
     for file in os.listdir(data_dir):
@@ -25,6 +26,7 @@ def load_documents(data_dir=r"C:\Users\Harshwardhan\mini-genai-assistant\data"):
             continue
     return docs
 
+
 def split_documents(docs):
     splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=150)
     all_chunks = []
@@ -32,4 +34,3 @@ def split_documents(docs):
         for chunk in splitter.split_text(doc["content"]):
             all_chunks.append({"source": doc["source"], "content": chunk})
     return all_chunks
-
