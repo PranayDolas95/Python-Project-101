@@ -46,24 +46,25 @@ Create a .env file in the root directory:
 
 Code
 OPENAI_API_KEY=your-api-key-here
+
+
 ▶️ Running the Assistant
 bash
 python knowledge_assistant/main.py
+
+
 You’ll see:
-
 Relevance scores for each query
-
 Detailed answers with source attribution
-
 Follow-up suggestions
 
+
+
 Memory-aware responses like:
-
 “What did I ask last time?”
-
 “Why did that happen?”
-
 “Can you continue our last discussion?”
+
 
 📁 File Structure
 Code
@@ -82,28 +83,18 @@ Python-Project-101/
 ├── requirements.txt            # Python dependencies
 ├── README.md                   # Project documentation
 ├── .gitignore                  # Prevents clutter from pycache, env, etc.
+
+
+
 🧪 Sample Queries to Test Memory
 text
 1. What is the projection cost?
 2. What did I ask last time?
 3. Why did that happen?
 4. Can you continue our last discussion?
+
+
 🤝 Contributing
 Pull requests are welcome! For major changes, please open an issue first to discuss what you’d like to change.
 
-📄 License
-This project is licensed under the MIT License.
 
-🙌 Credits
-Built by Harshwardhan for Pranay Dolas Powered by OpenAI GPT-4o Maintained with ❤️ and Python
-
-Code
-
----
-
-Let me know if you want:
-- A visual architecture diagram (I can generate one)
-- A GitHub project banner or logo
-- A demo GIF or video walkthrough
-
-This README will make your project shine on GitHub — professional, clear, and ready for collaboration 🚀
