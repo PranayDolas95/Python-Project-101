@@ -33,4 +33,3 @@ def escalate(query, reason, file_path=None):
     data.append(ticket)
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
-
