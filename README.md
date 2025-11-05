@@ -1,191 +1,109 @@
-# 🧠 Knowledge Assistant CLI
+📘 README.md
+markdown
+# 🧠 Knowledge Assistant
 
-A modular **Retrieval-Augmented Generation (RAG)** based command-line Knowledge Assistant that answers user queries from your custom documents.  
-If the assistant cannot find a confident answer, it **creates an escalation ticket**, and for each correct answer, it automatically **suggests a relevant follow-up question**.
+A context-aware, memory-enabled Python assistant that answers questions using a custom document knowledge base. It supports persistent memory, intelligent fallback logic, and conversational follow-ups — making it ideal for internal knowledge retrieval, document Q&A, and smart assistants.
 
 ---
 
 ## 🚀 Features
 
-✅ **Document Ingestion** – Load and split large documents into searchable chunks  
-✅ **Semantic Search** – Retrieve the most relevant chunks using vector similarity  
-✅ **LLM-Powered Answers** – Generate concise, context-aware answers using an LLM  
-✅ **Automatic Follow-up Questions** – Suggest a contextually relevant follow-up after each successful answer  
-✅ **Escalation System** – Log unanswered or low-confidence queries into a ticket file for review  
-✅ **Configurable Threshold** – Adjust the relevance score cutoff for fallback/escalation behavior  
+- 🔍 Vector search over document chunks
+- 🧠 LLM-powered answers with memory context
+- 💾 Persistent memory across sessions
+- 🧪 Intelligent fallback using keyword matching
+- 🔄 Auto-generated follow-up questions
+- 📚 Source attribution for each answer
+- ⚠️ Escalation logging for unresolved queries
 
 ---
 
-## 🏗️ Project Structure
+## 🧱 Architecture Overview
 
-knowledge-assistant/
-│
-├── ingest.py # Document loader and splitter
-├── search.py # Vector store creation and semantic search
-├── llm_integration.py # LLM answer generation, summarization, and follow-up
-├── escalate.py # Escalation ticket handler
-├── main.py # CLI controller and logic orchestrator
-│
-├── data/ # Folder containing knowledge base documents
-├── tickets/
-│ └── escalations.json # Logged escalation tickets
-│
-├── requirements.txt # Dependencies list
-└── README.md # Project documentation
+The assistant follows a modular pipeline:
 
-yaml
-Copy code
+User Query │ ▼ [main.py] → Entry point, memory handling, routing │ ▼ [search.py] → Vector search using embeddings │ ▼ [llm_integration.py] → OpenAI GPT-4o for answer generation and summarization │ ▼ [ingest.py] → Document loading and chunking │ ▼ [escalate.py] → Logs unresolved queries │ ▼ [memory.json] → Stores persistent Q&A history
+
+Code
 
 ---
 
-## ⚙️ Setup Instructions
+## 🛠️ Setup Instructions
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/knowledge-assistant.git
-cd knowledge-assistant
+git clone https://github.com/PranayDolas95/Python-Project-101.git
+cd Python-Project-101
 2. Create a Virtual Environment
 bash
-Copy code
 python -m venv venv
-source venv/bin/activate      # On Linux/Mac
-venv\Scripts\activate         # On Windows
+source venv/bin/activate  # or venv\Scripts\activate on Windows
 3. Install Dependencies
 bash
-Copy code
 pip install -r requirements.txt
-4. Set Environment Variables
-Create a .env file or export variables manually:
+4. Add Your OpenAI API Key
+Create a .env file in the root directory:
 
+Code
+OPENAI_API_KEY=your-api-key-here
+▶️ Running the Assistant
 bash
-Copy code
-RELEVANCE_THRESHOLD=1.2
-OPENAI_API_KEY=your_api_key_here
-5. Add Documents
-Place your knowledge base files (PDFs, text, etc.) inside the data/ directory.
+python knowledge_assistant/main.py
+You’ll see:
 
-🧩 How It Works
-Document Ingestion
+Relevance scores for each query
 
-ingest.py loads all documents and splits them into small text chunks for efficient retrieval.
+Detailed answers with source attribution
 
-Vector Search
+Follow-up suggestions
 
-search.py embeds each chunk and builds a vector index.
+Memory-aware responses like:
 
-When you ask a question, it finds the most similar chunks by semantic meaning.
+“What did I ask last time?”
 
-Answer Generation
+“Why did that happen?”
 
-llm_integration.py combines the retrieved context with your question.
+“Can you continue our last discussion?”
 
-It uses an LLM to form a contextually aware answer.
-
-Then, it summarizes the answer for clarity.
-
-Follow-up Generation
-
-After a correct answer, a relevant follow-up question is automatically generated to deepen user understanding.
-
-Escalation
-
-If the assistant cannot find enough relevant information (low relevance or weak LLM confidence),
-a ticket is created inside tickets/escalations.json with the question and timestamp.
-
-🧠 Example Usage
-bash
-Copy code
-$ python main.py
-Knowledge Assistant ready!
-Tickets logged at: /path/to/tickets/escalations.json
-
->> What is data encryption?
-Relevance distances: [0.45, 0.52, 0.60]
-
-Answer:
-Data encryption is the process of converting readable data into coded form to prevent unauthorized access.
-
-Follow-up:
-Would you like to learn about the different types of encryption methods?
-If relevance is too low:
-
-bash
-Copy code
->> What is alien signal detection?
-Relevance distances: [1.78, 1.94]
-I couldn’t find enough information. A support ticket was created.
-🧱 Architecture Overview
-🔹 Modules and Responsibilities
-Module	Responsibility
-ingest.py	Load and split documents into chunks
-search.py	Create embeddings and perform semantic search
-llm_integration.py	Generate, summarize, and produce follow-up questions
-escalate.py	Create structured JSON tickets for unresolved queries
-main.py	User interaction loop, orchestration logic, and decision control
-
-🧩 Logic Flow
+📁 File Structure
+Code
+Python-Project-101/
+├── knowledge_assistant/
+│   ├── main.py                 # Core logic and memory handling
+│   ├── ingest.py               # Document loading and chunking
+│   ├── search.py               # Vector search logic
+│   ├── llm_integration.py      # GPT-4o answer generation
+│   ├── escalate.py             # Escalation logging
+│   ├── memory.json             # Persistent memory store
+├── tickets/
+│   └── escalations.json        # Logged unresolved queries
+├── .env                        # Your OpenAI API key (not committed)
+├── .env.example                # Safe placeholder for sharing
+├── requirements.txt            # Python dependencies
+├── README.md                   # Project documentation
+├── .gitignore                  # Prevents clutter from pycache, env, etc.
+🧪 Sample Queries to Test Memory
 text
-Copy code
-User Query
-   ↓
-Vector Search (semantic)
-   ↓
-If Relevance < Threshold → Keyword Fallback → Escalate (ticket)
-   ↓
-If Relevance ≥ Threshold → LLM Answer → Summarize → Generate Follow-up
-   ↓
-Display Answer + Follow-up
-📁 Escalation Ticket Format
-Example escalations.json entry:
+1. What is the projection cost?
+2. What did I ask last time?
+3. Why did that happen?
+4. Can you continue our last discussion?
+🤝 Contributing
+Pull requests are welcome! For major changes, please open an issue first to discuss what you’d like to change.
 
-json
-Copy code
-{
-  "reference_id": "b7e2a3f0-92b1-45d8-9f63-d7a2a81a1a2f",
-  "timestamp": "2025-10-27T14:21:36Z",
-  "question": "What is quantum cloud networking?",
-  "reason": "Low relevance. Insufficient knowledge."
-}
-🧩 Customization
-Feature	Description	How to Modify
-Relevance Threshold	Controls when fallback or escalation triggers	Change RELEVANCE_THRESHOLD in .env
-Embedding Model	Change text vectorization model	Modify create_vector_store() in search.py
-LLM Provider	Use OpenAI, Anthropic, or Local LLMs	Update generate_answer() in llm_integration.py
-Ticket Storage	Change log location or format	Edit escalate.py
+📄 License
+This project is licensed under the MIT License.
 
-🧪 Future Enhancements
-🌐 Web-based dashboard for reviewing escalations
+🙌 Credits
+Built by Harshwardhan for Pranay Dolas Powered by OpenAI GPT-4o Maintained with ❤️ and Python
 
-💾 Persistent vector store (FAISS, Qdrant, or ChromaDB)
-
-🔁 Auto-learning: add resolved tickets back to the knowledge base
-
-🗣️ Multi-turn conversation context memory
-
-🧑‍💻 Author
-Himanshu Sapkale
-💼 DevSecOps Engineer | Cloud Security Enthusiast
-📧 [youremail@example.com]
-🌐 [LinkedIn Profile or Portfolio link]
-
-🪪 License
-This project is licensed under the MIT License – feel free to use, modify, and distribute with attribution.
-
-🏁 Summary
-The Knowledge Assistant bridges the gap between automated document intelligence and human escalation, enabling:
-
-Faster knowledge retrieval
-
-Transparent fallback mechanisms
-
-Smart contextual conversations
-
-It’s a lightweight, extensible, and intelligent foundation for internal enterprise knowledge management systems.
-
-pgsql
-Copy code
+Code
 
 ---
 
-Would you like me to make this README **automatically generate and update version info (e.g., build date, version number)** in the header each time you run the app?  
-That can make it look like a professional maintained project.
+Let me know if you want:
+- A visual architecture diagram (I can generate one)
+- A GitHub project banner or logo
+- A demo GIF or video walkthrough
+
+This README will make your project shine on GitHub — professional, clear, and ready for collaboration 🚀
